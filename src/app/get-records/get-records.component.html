@@ -1,0 +1,17 @@
+<p>
+  get-records works!
+</p>
+
+<button (click)="getPosts()">Get all posts</button>
+
+<button (click)="getPostByID()">Get post by ID</button>
+
+<table>
+<div *ngFor="let post of posts | async"> <!-- print out each post object of the list called posts -->
+
+
+  {{ post | json }}
+<br>
+  description = {{post.Description | json}}
+</div>
+</table>
