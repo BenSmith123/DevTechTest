@@ -4,14 +4,37 @@
 
 <button (click)="getPosts()">Get all posts</button>
 
-<button (click)="getPostByID()">Get post by ID</button>
+<form>
+  <!-- <button (click)="getPostByID()">Get post by ID</button> -->
+  <input type="text" class=txt name="item" placeholder="705" [(ngModel)]="myText">
+  <br><span>{{ myText }}</span>
+  <input type = "submit" (click)="getPostByID()" value="List appointments for user">
+</form>
+
 
 <table>
-<div *ngFor="let post of posts | async"> <!-- print out each post object of the list called posts -->
+  <div *ngFor="let post of posts | async; first as isFirst"> <!-- print out each post object of the list called posts -->
 
+      <span *ngIf="isFirst">
+        <tr>
+          <th>Id</th>
+          <th>Description</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Notes</th>
+          <th>Party</th>
+        </tr>
+      </span>
+    <tr>
+      <th>{{post.Id}}</th>
+      <th>{{post.Description}}</th>
+      <th>{{post.Start}}</th>
+      <th>{{post.End}}</th>
+      <th>{{post.Notes}}</th>
+      <th>{{post.Party}}</th>
+    </tr>
 
-  {{ post | json }}
-<br>
-  description = {{post.Description | json}}
-</div>
+    <!-- {{ post | json }} this shows the response in JSON format-->
+
+  </div>
 </table>
