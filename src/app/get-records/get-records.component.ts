@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Post } from '../post-interface';
+import { Appointment } from '../appointment-interface';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -10,12 +10,12 @@ import { Observable } from 'rxjs/Observable';
 })
 export class GetRecordsComponent implements OnInit {
 
-  //readonly ROOT_URL = 'https://jsonplaceholder.typicode.com';
+  //var bla: CreateAppointmentComponent = new CreateAppointmentComponent();
+
   readonly ROOT_URL = 'http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com';
 
-//http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com&id=4
 
-  myText= "hey";
+  myText = "";
   posts: Observable<any>; // type = Observable array of Post objects that follow the post-interface
   //posts: any;
 
@@ -34,10 +34,11 @@ export class GetRecordsComponent implements OnInit {
 
   getPostByID(){
 
-    let params = new HttpParams().set('id','705');
+    //let params = new HttpParams().set('id','705');
     console.log("getPostByID called");
-    this.posts = this.http.get("http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com&id=705");
-    //this.posts = this.http.get(this.ROOT_URL+"&id=705");
+    this.posts = this.http.get(this.ROOT_URL+"&id="+this.myText);
+    console.log(this.posts);
+    //this.posts = this.http.get<Post[]>(this.ROOT_URL+"&id=705");
 
   }
 

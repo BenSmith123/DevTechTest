@@ -1,5 +1,5 @@
 
-export interface Post {
+export interface Appointment {
   id: number;
   description: string;
   start: string; // needs to be date
@@ -7,4 +7,5 @@ export interface Post {
   notes: string[];
   party: number[];
   providerEmail: string;
+  
 }

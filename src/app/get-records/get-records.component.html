@@ -1,12 +1,9 @@
-<p>
-  get-records works!
-</p>
 
 <button (click)="getPosts()">Get all posts</button>
 
 <form>
   <!-- <button (click)="getPostByID()">Get post by ID</button> -->
-  <input type="text" class=txt name="item" placeholder="705" [(ngModel)]="myText">
+  <input type="text" class=txt name="item" [(ngModel)]="myText">
   <br><span>{{ myText }}</span>
   <input type = "submit" (click)="getPostByID()" value="List appointments for user">
 </form>

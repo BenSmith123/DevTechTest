@@ -5,17 +5,34 @@
   </h1>
 </div>
 
-<!--
-REQUIREMENTS
-Your web app requires this core functionality, with no limit on page/screen count:
-•	List all appointments
-•	List appointments for a selected user
-•	View appointment details and its respective notes
-•	Edit appointment details
-•	Add a note to an appointment
+<!------ REQUIREMENTS ------
 
-no functionality required to be able to make an appointment ^^
--->
+•	List all appointments
+  List appointments but don't show all details
+  (API: http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com)
+
+•	List appointments for a selected user
+  (API: http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com&id={id})
+
+•	View appointment details and its respective notes
+  After listing all appointments, selecting one will show its details & notes
+
+•	Edit appointment details
+  (PUT: http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com)
+  Include the body of the request in json format with fields filled
+
+•	Add a note to an appointment
+  After listing all appointments and one is selected (view appointment details), create an add note button and text input field
+  (PUT: http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com)
+  Include the entire objects details in json format, including the added note
+
+
+To create appointment:
+(no functionality required to be able to make an appointment)
+POST: http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com
+and in the body of the post, include a json/xml of the appointment fields
+
+---------------------->
 
 <app-get-records></app-get-records>
 

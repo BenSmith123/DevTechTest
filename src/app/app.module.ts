@@ -15,4 +15,5 @@ import { CreateAppointmentComponent } from './create-appointment/create-appointm
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
