@@ -21,6 +21,15 @@ export class GetRecordsComponent implements OnInit {
   showAppointmentDetails = false; //
   showIdInput = true;
 
+  appointment: Appointment = {
+    id: 5,
+    description: "",
+    start: "",
+    end: "",
+    notes: [],
+    party: [],
+    providerEmail: ""
+  };
 
 
 
@@ -32,6 +41,15 @@ export class GetRecordsComponent implements OnInit {
 
   onClick(post){
 
+    this.appointment.id = post.Id;
+    this.appointment.description = post.Description;
+    this.appointment.start = post.Start;
+    this.appointment.end = post.End;
+    this.appointment.notes = post.Notes;
+    this.appointment.party = post.Party;
+    this.appointment.providerEmail = post.ProviderEmail;
+
+    /*
     var appointment: Appointment = {
       id: post.Id,
       description: post.Description,
@@ -41,12 +59,13 @@ export class GetRecordsComponent implements OnInit {
       party: post.Party,
       providerEmail: post.ProviderEmail
     };
+    */
 
     //this.appointment=appointment;
 
-    console.log(appointment);
+    console.log(this.appointment);
 
-    console.log(appointment.id);
+    //console.log(appointment.id);
 
     this.showAppointmentDetails = true;
 
