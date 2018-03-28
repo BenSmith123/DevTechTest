@@ -1,16 +1,23 @@
 
-<button (click)="getPosts()">Get all posts</button>
+<button (click)="getPosts()">View all appointments</button>
+<br><br><br>
 
-<form>
+
+<form *ngIf="showIdInput">
   <!-- <button (click)="getPostByID()">Get post by ID</button> -->
-  <input type="text" class=txt name="item" [(ngModel)]="myText">
+  <input type="text" class=txt name="item" [(ngModel)]="myText" placeholder="Enter an ID">
   <br><span>{{ myText }}</span>
   <input type = "submit" (click)="getPostByID()" value="List appointments for user">
 </form>
 
+<!--
+<p [(ngModel)]="appointment">
+text: {{appointment}}
+</p>
+-->
 
 <table>
-  <div *ngFor="let post of posts | async; first as isFirst"  (click)="onClick(post)"> <!-- print out each post object of the list called posts -->
+  <div *ngFor="let post of posts | async; first as isFirst" (click)="onClick(post)" > <!-- print out each post object of the list called posts -->
 
     <span *ngIf="isFirst">
       <tr>
@@ -23,31 +30,26 @@
     <tr>
       <th>{{post.Id}}</th>
       <th>{{post.Description}}</th>
-      <th>{{post.Start}}</th>
+      <th>{{post.Start | date:'dd-MM-yyyy HH:mm z'}}</th>
     </tr>
 
-<!--
-      <span *ngIf="isFirst">
-        <tr>
-          <th>Id</th>
-          <th>Description</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Notes</th>
-          <th>Party</th>
-        </tr>
-      </span>
-    <tr>
-      <th>{{post.Id}}</th>
-      <th>{{post.Description}}</th>
-      <th>{{post.Start}}</th>
-      <th>{{post.End}}</th>
-      <th>{{post.Notes}}</th>
-      <th>{{post.Party}}</th>
-    </tr>
--->
 
     <!-- {{ post | json }} this shows the response in JSON format-->
 
   </div>
 </table>
+
+<div *ngIf="showAppointmentDetails">
+  <br>
+  <table >
+    <tr>
+      <th>{{appointment}}</th>
+      <th>hello</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </table>
+
+</div>

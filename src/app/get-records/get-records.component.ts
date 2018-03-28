@@ -14,19 +14,41 @@ export class GetRecordsComponent implements OnInit {
 
   readonly ROOT_URL = 'http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com';
 
-
+  //appointment = "change me";
   myText = "";
   posts: Observable<any>; // type = Observable array of Post objects that follow the post-interface
   //posts: any;
+  showAppointmentDetails = false; //
+  showIdInput = true;
+
+
+
 
   constructor(private http: HttpClient) { }
-
+  //appointmentDetails: String[];
 
   ngOnInit(){
   }
 
   onClick(post){
-    console.log(post);
+
+    var appointment: Appointment = {
+      id: post.Id,
+      description: post.Description,
+      start: post.Start,
+      end: post.End,
+      notes: post.Notes,
+      party: post.Party,
+      providerEmail: post.ProviderEmail
+    };
+
+    //this.appointment=appointment;
+
+    console.log(appointment);
+
+    console.log(appointment.id);
+
+    this.showAppointmentDetails = true;
 
   }
 

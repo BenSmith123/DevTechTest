@@ -7,5 +7,4 @@ export interface Appointment {
   notes: string[];
   party: number[];
   providerEmail: string;
-  
 }
