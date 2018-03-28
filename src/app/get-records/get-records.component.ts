@@ -21,7 +21,7 @@ export class GetRecordsComponent implements OnInit {
   showAppointmentsForId = false;
   showAppointmentDetails = false;
   showIdInput = true;
-  inputID = "";
+  inputId = "";
   note = "";
 
   appointment: Appointment = {
@@ -62,6 +62,27 @@ export class GetRecordsComponent implements OnInit {
     //this.posts = this.http.get<Post[]>(this.ROOT_URL);
   }
 
+
+  partyHasId(party, id){
+    console.log(this.inputId);
+    // if the userid of the appointment is the userid that was input, include it in the appointments list
+    if (id == this.inputId){
+      return true;
+    }
+
+    if (this.inputId != ""){ // if the input is not empty
+      // check each appointments party-list for the inputId
+      for(var i = 0; i < party.length; i++) {
+        if (party[i].toString() == this.inputId){ // if the input userid is found in the party-array another appointment, include the appointment in the list
+          //console.log("Id found! " +party[i].toString() + "==" +this.inputId);
+          return true;
+        }
+      }
+    }
+
+    return false; // if the id does not match any userID or is not found in the party list for any appointment
+  }
+
   addNote(appointment, note){
     console.log(appointment);
     appointment.notes.push(note);
@@ -74,6 +95,7 @@ export class GetRecordsComponent implements OnInit {
   getPostByID(id){
     console.log("getPostByID called: id="+id);
     //let params = new HttpParams().set('id','705');
+    this.inputId = id; // store the inputId
 
     this.posts = this.http.get(this.ROOT_URL);
     this.showAllAppointments = false;

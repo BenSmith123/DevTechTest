@@ -17,7 +17,7 @@ text: {{appointment}}
 -->
 
 <table *ngIf="showAppointmentsForId">
-  <div *ngFor="let post of posts | async; first as isFirst" > <!-- print out each post object of the list called posts -->
+  <div *ngFor="let post of posts | async; first as isFirst;  last as isLast" > <!-- print out each post object of the list called posts -->
     <!-- need to add all details to isFirst table row
     <span *ngIf="isFirst">
       <tr>
@@ -26,23 +26,31 @@ text: {{appointment}}
         <th>Start</th>
       </tr>
     </span> -->
-
-
-
-
-    <th>{{inputId}}</th> <!-- DEBUG: for some reason inputId is empty -->
-
+    <span *ngIf=isLast>last as isLast</span>
     <!-- because the array of id's in the Party field are returned as a string, search the string to find the corresponding id -->
-    <tr *ngIf="post.Party.indexOf(4) != -1">
+    <!--<tr *ngIf="post.Party.indexOf(getInputId()) != -1">-->
+    <!-- <tr *ngIf="partyHasId(post.Party)"> -->
+    <tr *ngIf="partyHasId(post.Party, post.Id); else elseBlock">
+      <!--<span *ngIf="isFirst"><p>ID {{inputId}} has the following appointments:</p></span>-->
+
+
+        <th>{{post.Description}}</th>
+        <th>{{post.Start | date:'dd-MM-yyyy HH:mm z'}}</th>
+        <th>{{post.End | date:'dd-MM-yyyy HH:mm z'}}</th>
+        <th>{{post.Notes}}</th>
+        <th>{{post.Party}}</th>
+
+
       <!-- DEBUG: need to replace 4 with inputId-->
 
-      <th>{{post.Id}}</th>
       <!--
       <th>{{post.Id}}</th>
       <th>{{post.Description}}</th>
       <th>{{post.Start | date:'dd-MM-yyyy HH:mm z'}}</th>
     -->
     </tr>
+
+    <ng-template #elseBlock *ngIf="isLast"> Alternate text while primary text is hidden</ng-template>
 
     <!-- {{ post | json }} this shows the response in JSON format-->
 
