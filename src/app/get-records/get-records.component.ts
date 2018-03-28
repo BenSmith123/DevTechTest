@@ -25,9 +25,20 @@ export class GetRecordsComponent implements OnInit {
   ngOnInit(){
   }
 
+  onClick(post){
+    console.log(post);
+
+  }
+
   getPosts(){
-    console.log(this.ROOT_URL);
+    //console.log(this.ROOT_URL);
     this.posts = this.http.get(this.ROOT_URL); // working with posts as any TYPE
+    //.subscribe( value => console.log(value));
+
+    //console.log(this.posts[2]);
+    //for (let post of this.posts) {
+      //console.log(post); // 1, "string", false
+    //}
 
     //this.posts = this.http.get<Post[]>(this.ROOT_URL);
   }

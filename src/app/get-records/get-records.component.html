@@ -10,8 +10,23 @@
 
 
 <table>
-  <div *ngFor="let post of posts | async; first as isFirst"> <!-- print out each post object of the list called posts -->
+  <div *ngFor="let post of posts | async; first as isFirst"  (click)="onClick(post)"> <!-- print out each post object of the list called posts -->
 
+    <span *ngIf="isFirst">
+      <tr>
+        <th>Id</th>
+        <th>Description</th>
+        <th>Start</th>
+      </tr>
+    </span>
+
+    <tr>
+      <th>{{post.Id}}</th>
+      <th>{{post.Description}}</th>
+      <th>{{post.Start}}</th>
+    </tr>
+
+<!--
       <span *ngIf="isFirst">
         <tr>
           <th>Id</th>
@@ -30,6 +45,7 @@
       <th>{{post.Notes}}</th>
       <th>{{post.Party}}</th>
     </tr>
+-->
 
     <!-- {{ post | json }} this shows the response in JSON format-->
 
