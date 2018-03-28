@@ -10,16 +10,18 @@ import { Observable } from 'rxjs/Observable';
 })
 export class GetRecordsComponent implements OnInit {
 
-  //var bla: CreateAppointmentComponent = new CreateAppointmentComponent();
+  constructor(private http: HttpClient) { }
 
   readonly ROOT_URL = 'http://devtechtest.previewourapp.com/api/Appointment?providerEmail=benjiiman12@gmail.com';
 
   //appointment = "change me";
   myText = "";
+  myString = "";
   posts: Observable<any>; // type = Observable array of Post objects that follow the post-interface
   //posts: any;
   showAppointmentDetails = false; //
   showIdInput = true;
+  note = "";
 
   appointment: Appointment = {
     id: 5,
@@ -31,9 +33,6 @@ export class GetRecordsComponent implements OnInit {
     providerEmail: ""
   };
 
-
-
-  constructor(private http: HttpClient) { }
   //appointmentDetails: String[];
 
   ngOnInit(){
@@ -49,18 +48,6 @@ export class GetRecordsComponent implements OnInit {
     this.appointment.party = post.Party;
     this.appointment.providerEmail = post.ProviderEmail;
 
-    /*
-    var appointment: Appointment = {
-      id: post.Id,
-      description: post.Description,
-      start: post.Start,
-      end: post.End,
-      notes: post.Notes,
-      party: post.Party,
-      providerEmail: post.ProviderEmail
-    };
-    */
-
     //this.appointment=appointment;
 
     console.log(this.appointment);
@@ -68,20 +55,25 @@ export class GetRecordsComponent implements OnInit {
     //console.log(appointment.id);
 
     this.showAppointmentDetails = true;
-
   }
 
   getPosts(){
     //console.log(this.ROOT_URL);
-    this.posts = this.http.get(this.ROOT_URL); // working with posts as any TYPE
-    //.subscribe( value => console.log(value));
-
-    //console.log(this.posts[2]);
-    //for (let post of this.posts) {
-      //console.log(post); // 1, "string", false
-    //}
+    this.posts = this.http.get(this.ROOT_URL);
+    //.subscribe(res => console.log(res.text())); // working with posts as any TYPE
 
     //this.posts = this.http.get<Post[]>(this.ROOT_URL);
+  }
+
+  addNote(appointment, note){
+    console.log(appointment);
+    appointment.notes.push(note);
+    console.log(note);
+    //this.posts = this.http.get(this.ROOT_URL+"&id=705");
+    //this.http.get(this.ROOT_URL+"&id="+appointment.id).subscribe(res => console.log(res));
+
+    this.http.put(this.ROOT_URL+"&id="+appointment.id,appointment)
+    .subscribe(res => console.log(res));
   }
 
   getPostByID(){

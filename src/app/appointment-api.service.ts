@@ -6,6 +6,4 @@ export class AppointmentApiService {
 
   constructor(private http: HttpClient) { }
 
-
-
 }

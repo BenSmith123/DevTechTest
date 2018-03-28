@@ -7,14 +7,14 @@ import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { GetRecordsComponent } from './get-records/get-records.component';
-import { CreateAppointmentComponent } from './create-appointment/create-appointment.component';
 import { ListItemComponent } from './list-item/list-item.component';
+import { AppointmentApiService } from './appointment-api.service';
 
 
 @NgModule({
-  declarations: [AppComponent, GetRecordsComponent, CreateAppointmentComponent, ListItemComponent],
+  declarations: [AppComponent, GetRecordsComponent, ListItemComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule],
-  providers: [],
+  providers: [AppointmentApiService],
   bootstrap: [AppComponent]
 })
 

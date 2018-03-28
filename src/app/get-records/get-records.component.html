@@ -52,8 +52,7 @@ text: {{appointment}}
   </table>
 
     <!-- <button (click)="getPostByID()">Get post by ID</button> -->
-    <input type="text" class=txt name="item" [(ngModel)]="myText" placeholder="Add a note">
-    <br><span>{{ myText }}</span>
-    <input type = "submit" (click)="getPostByID()" value="Add note">
+    <input type="text" class=txt name="item" [(ngModel)]="note" placeholder="Add a note">
+    <input type = "submit" (click)="addNote(appointment, note)" value="Add note">
 
 </div>
