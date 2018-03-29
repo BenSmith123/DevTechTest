@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Appointment } from '../appointment-interface';
 import { Observable } from 'rxjs/Observable';
 
+
 @Component({
   selector: 'app-get-records',
   templateUrl: './get-records.component.html',
@@ -23,6 +24,7 @@ export class GetRecordsComponent implements OnInit {
   showIdInput = true;
   inputId = "";
   note = "";
+
 
   appointment: Appointment = {
     id: 5,

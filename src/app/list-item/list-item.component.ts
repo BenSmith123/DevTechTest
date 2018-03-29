@@ -9,6 +9,7 @@ export class ListItemComponent implements OnInit {
 
   constructor() { }
 
+  test = "345";
   ngOnInit() {
   }
 

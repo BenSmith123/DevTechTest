@@ -1,5 +1,5 @@
 
-<button (click)="getPosts()">View all appointments</button>
+<button class="button" (click)="getPosts()">View all appointments</button>
 <br><br><br>
 
 
@@ -7,14 +7,9 @@
   <!-- <button (click)="getPostByID()">Get post by ID</button> -->
   <input type="text" class=txt name="item" [(ngModel)]="inputId" placeholder="Enter an ID">
   <br><span>{{ inputId }}</span>
-  <input type = "submit" (click)="getPostByID(inputId)" value="List appointments for user">
+  <input class="button" type="submit" (click)="getPostByID(inputId)" value="List appointments for user">
 </form>
 
-<!--
-<p [(ngModel)]="appointment">
-text: {{appointment}}
-</p>
--->
 
 <table *ngIf="showAppointmentsForId">
   <div *ngFor="let post of posts | async; first as isFirst;  last as isLast" > <!-- print out each post object of the list called posts -->
@@ -40,40 +35,32 @@ text: {{appointment}}
         <th>{{post.Notes}}</th>
         <th>{{post.Party}}</th>
 
-
-      <!-- DEBUG: need to replace 4 with inputId-->
-
-      <!--
-      <th>{{post.Id}}</th>
-      <th>{{post.Description}}</th>
-      <th>{{post.Start | date:'dd-MM-yyyy HH:mm z'}}</th>
-    -->
     </tr>
 
     <ng-template #elseBlock *ngIf="isLast"> Alternate text while primary text is hidden</ng-template>
 
-    <!-- {{ post | json }} this shows the response in JSON format-->
 
   </div>
 </table>
 
 
 
-<table *ngIf="showAllAppointments">
+<table class="hoverTable" *ngIf="showAllAppointments">
   <div *ngFor="let post of posts | async; first as isFirst" (click)="onClick(post)" > <!-- print out each post object of the list called posts -->
 
     <span *ngIf="isFirst">
+      <p>Click an appointment to view appointment details or edit/add note.</p>
       <tr>
-        <th>Id</th>
-        <th>Description</th>
-        <th>Start</th>
+        <th>ID</th>
+        <th>DESCRIPTION</th>
+        <th>START</th>
       </tr>
     </span>
 
     <tr>
       <th>{{post.Id}}</th>
       <th>{{post.Description}}</th>
-      <th>{{post.Start | date:'dd-MM-yyyy HH:mm z'}}</th>
+      <th>Date: {{post.Start | date:'dd-MM-yyyy'}} <br>Time: {{ post.Start | date:'HH:mm z'}}</th>
     </tr>
 
     <!-- {{ post | json }} this shows the response in JSON format-->
@@ -83,19 +70,31 @@ text: {{appointment}}
 
 <div *ngIf="showAppointmentDetails">
   <br>
-  <table >
+  <table>
     <tr>
+      <th>ID</th>
+      <th>Description</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Notes</th>
+      <th>Party</th>
+    </tr>
+    
+    <tr style="vertical-align: text-top;">
       <th>{{appointment.id}}</th>
       <th>{{appointment.description}}</th>
       <th>{{appointment.start | date:'dd-MM-yyyy HH:mm z'}}</th>
       <th>{{appointment.end | date:'dd-MM-yyyy HH:mm z'}}</th>
-      <th>{{appointment.notes}}</th>
+      <th>
+        {{appointment.notes}}
+        <br>
+        <div>
+          <input type="text" class=txt name="item" [(ngModel)]="note" placeholder="Add a note">
+          <input type = "submit" (click)="addNote(appointment, note)" value="Add note">
+        </div>
+      </th>
       <th>{{appointment.party}}</th>
     </tr>
   </table>
-
-    <!-- <button (click)="getPostByID()">Get post by ID</button> -->
-    <input type="text" class=txt name="item" [(ngModel)]="note" placeholder="Add a note">
-    <input type = "submit" (click)="addNote(appointment, note)" value="Add note">
 
 </div>
