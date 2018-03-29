@@ -46,9 +46,9 @@
 
 
 <table class="hoverTable" *ngIf="showAllAppointments">
-  <div *ngFor="let post of posts | async; first as isFirst" (click)="onClick(post)" > <!-- print out each post object of the list called posts -->
-
-    <span *ngIf="isFirst">
+  <div *ngFor="let post of posts | async; first as isFirst" (click)="onClickAppointment(post)" > <!-- print out each post object of the list called posts -->
+    <!-- {{ post | json }} this shows the response in JSON format-->
+    <span *ngIf="isFirst" style="color: white;">
       <p>Click an appointment to view appointment details or edit/add note.</p>
       <tr>
         <th>ID</th>
@@ -62,16 +62,14 @@
       <th>{{post.Description}}</th>
       <th>Date: {{post.Start | date:'dd-MM-yyyy'}} <br>Time: {{ post.Start | date:'HH:mm z'}}</th>
     </tr>
-
-    <!-- {{ post | json }} this shows the response in JSON format-->
-
   </div>
-</table>
+</table><!-- End of ALL appointments table -->
+
 
 <div *ngIf="showAppointmentDetails">
   <br>
   <table>
-    <tr>
+    <tr style="color: white;">
       <th>ID</th>
       <th>Description</th>
       <th>Start</th>
@@ -79,22 +77,23 @@
       <th>Notes</th>
       <th>Party</th>
     </tr>
-    
+
     <tr style="vertical-align: text-top;">
       <th>{{appointment.id}}</th>
       <th>{{appointment.description}}</th>
-      <th>{{appointment.start | date:'dd-MM-yyyy HH:mm z'}}</th>
-      <th>{{appointment.end | date:'dd-MM-yyyy HH:mm z'}}</th>
+      <th>Date: {{appointment.start | date:'dd-MM-yyyy'}} <br>Time: {{ appointment.start | date:'HH:mm z'}}</th>
+      <th>Date: {{appointment.end | date:'dd-MM-yyyy'}} <br>Time: {{ appointment.end | date:'HH:mm z'}}</th>
       <th>
-        {{appointment.notes}}
-        <br>
+        <div *ngFor="let note of appointment.notes">-  {{note}}<br></div>
         <div>
-          <input type="text" class=txt name="item" [(ngModel)]="note" placeholder="Add a note">
-          <input type = "submit" (click)="addNote(appointment, note)" value="Add note">
+          <input type="text" class=txt name="item" [(ngModel)]="inputNote" placeholder="Add a note">
+          <input type = "submit" (click)="addNote(appointment, inputNote)" value="Add note">
         </div>
-      </th>
-      <th>{{appointment.party}}</th>
-    </tr>
-  </table>
+        </th>
 
-</div>
+        <th>
+          <div *ngFor="let userId of appointment.party"> {{userId}} <br> </div>
+        </th>
+      </tr>
+    </table>
+</div> <!-- End of appointment details table -->

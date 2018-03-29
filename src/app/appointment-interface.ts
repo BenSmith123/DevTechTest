@@ -1,9 +1,8 @@
-
 export interface Appointment {
   id: number;
   description: string;
-  start: string; // needs to be date
-  end: string; // needs to be date
+  start: string;
+  end: string;
   notes: string[];
   party: number[];
   providerEmail: string;

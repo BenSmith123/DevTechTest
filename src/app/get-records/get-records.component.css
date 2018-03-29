@@ -4,13 +4,18 @@
 }
 
 table {
+  color: black;
   border-collapse: collapse;
   width: auto;
   height: auto;
   overflow:auto;
+  line-height: 1.5;
 }
 
 th, td {
+  padding: 10px;
+  text-align: left;
+  width: 200px;
   border: 1px solid black;
   background: rgba(73,155,234,1);
   background: linear-gradient(to right, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
@@ -21,19 +26,12 @@ tr {
 }
 
 tr:hover {
-  background: red !important;
+  background: white !important;
+}
+
+.hoverTable tr:hover {
   color: white;
   cursor: pointer;
-}
-
-table tr:first-child {
-  font-weight: bold;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-    width: 200px;
 }
 
 .button {
