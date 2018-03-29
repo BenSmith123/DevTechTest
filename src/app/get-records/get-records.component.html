@@ -1,44 +1,47 @@
 
-<button class="button" (click)="getPosts()">View all appointments</button>
+<button class="button" (click)="getAppointments()">View all appointments</button>
 <br><br><br>
 
 
+
+
 <form *ngIf="showIdInput">
-  <!-- <button (click)="getPostByID()">Get post by ID</button> -->
+  <!-- <button (click)="getAppointmentByID()">Get post by ID</button> -->
   <input type="text" class=txt name="item" [(ngModel)]="inputId" placeholder="Enter an ID">
-  <br><span>{{ inputId }}</span>
-  <input class="button" type="submit" (click)="getPostByID(inputId)" value="List appointments for user">
+  <!-- <br><span>{{ inputId }}</span> -->
+  <input class="button" type="submit" (click)="getAppointmentByID(inputId)" value="List appointments for user">
 </form>
 
 
 <table *ngIf="showAppointmentsForId">
-  <div *ngFor="let post of posts | async; first as isFirst;  last as isLast" > <!-- print out each post object of the list called posts -->
-    <!-- need to add all details to isFirst table row
-    <span *ngIf="isFirst">
-      <tr>
-        <th>Id</th>
-        <th>Description</th>
-        <th>Start</th>
-      </tr>
-    </span> -->
-    <span *ngIf=isLast>last as isLast</span>
+  <div *ngFor="let appoint of appointments | async; first as isFirst;  last as isLast" > <!-- print out each post object of the list called posts -->
+
     <!-- because the array of id's in the Party field are returned as a string, search the string to find the corresponding id -->
     <!--<tr *ngIf="post.Party.indexOf(getInputId()) != -1">-->
     <!-- <tr *ngIf="partyHasId(post.Party)"> -->
-    <tr *ngIf="partyHasId(post.Party, post.Id); else elseBlock">
+    <tr *ngIf="partyHasId(appoint.Party, appoint.Id); else elseBlock">
+
+      <!--
+      <span *ngIf="appoint.Id && showRow && showTest">
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Start</th>
+        </tr>
+      </span>
+    -->
+
       <!--<span *ngIf="isFirst"><p>ID {{inputId}} has the following appointments:</p></span>-->
-
-
-        <th>{{post.Description}}</th>
-        <th>{{post.Start | date:'dd-MM-yyyy HH:mm z'}}</th>
-        <th>{{post.End | date:'dd-MM-yyyy HH:mm z'}}</th>
-        <th>{{post.Notes}}</th>
-        <th>{{post.Party}}</th>
+        <th contenteditable="isEditable">{{appoint.Id}}<p id=editable (click)="consoleTalk()">[edit]</p></th> <!-- DEBUG -->
+        <th>{{appoint.Description}}</th>
+        <th>{{appoint.Start | date:'dd-MM-yyyy HH:mm a'}}</th>
+        <th>{{appoint.End | date:'dd-MM-yyyy HH:mm a'}}</th>
+        <th>{{appoint.Notes}}</th>
+        <th>{{appoint.Party}}</th>
 
     </tr>
 
     <ng-template #elseBlock *ngIf="isLast"> Alternate text while primary text is hidden</ng-template>
-
 
   </div>
 </table>
@@ -46,8 +49,8 @@
 
 
 <table class="hoverTable" *ngIf="showAllAppointments">
-  <div *ngFor="let post of posts | async; first as isFirst" (click)="onClickAppointment(post)" > <!-- print out each post object of the list called posts -->
-    <!-- {{ post | json }} this shows the response in JSON format-->
+  <div *ngFor="let appoint of appointments | async; first as isFirst" (click)="onClickAppointment(appoint)" > <!-- print out each post object of the list called posts -->
+    <!-- {{ appoint | json }} this shows the response in JSON format-->
     <span *ngIf="isFirst" style="color: white;">
       <p>Click an appointment to view appointment details or edit/add note.</p>
       <tr>
@@ -58,9 +61,9 @@
     </span>
 
     <tr>
-      <th>{{post.Id}}</th>
-      <th>{{post.Description}}</th>
-      <th>Date: {{post.Start | date:'dd-MM-yyyy'}} <br>Time: {{ post.Start | date:'HH:mm z'}}</th>
+      <th>{{ appoint.Id }}</th>
+      <th>{{ appoint.Description }}</th>
+      <th>Date: {{ appoint.Start | date:'dd-MM-yyyy' }} <br>Time: {{ appoint.Start | date:'HH:mm a' }}</th>
     </tr>
   </div>
 </table><!-- End of ALL appointments table -->
@@ -68,8 +71,11 @@
 
 <div *ngIf="showAppointmentDetails">
   <br>
+  <p>Click a field to edit it.</p>
   <table>
+
     <tr style="color: white;">
+      <!-- <th contenteditable="isEditable">ID</th> could try editable fields-->
       <th>ID</th>
       <th>Description</th>
       <th>Start</th>
@@ -77,23 +83,81 @@
       <th>Notes</th>
       <th>Party</th>
     </tr>
-
-    <tr style="vertical-align: text-top;">
-      <th>{{appointment.id}}</th>
-      <th>{{appointment.description}}</th>
-      <th>Date: {{appointment.start | date:'dd-MM-yyyy'}} <br>Time: {{ appointment.start | date:'HH:mm z'}}</th>
-      <th>Date: {{appointment.end | date:'dd-MM-yyyy'}} <br>Time: {{ appointment.end | date:'HH:mm z'}}</th>
-      <th>
-        <div *ngFor="let note of appointment.notes">-  {{note}}<br></div>
-        <div>
-          <input type="text" class=txt name="item" [(ngModel)]="inputNote" placeholder="Add a note">
-          <input type = "submit" (click)="addNote(appointment, inputNote)" value="Add note">
+    <!-- Each table-row cell has an edit button binded to the appointment.attribute inside the cell-->
+    <tr>
+    <!--<tr contenteditable="true"> contenteditable doesn't quite work, cannot bind or get value -->
+      <th><!-- ID FIELD -->
+        <div *ngIf="editable.id"> <!-- if the id field is editable-->
+          <input [(ngModel)]="appointment.id"> <!-- bind the input -->
+          <button (click)="editable.id=false">Save</button> <!-- show save button instead of edit button -->
         </div>
+        <div *ngIf="!editable.id">
+          <button (click)="editable.id=true">Edit</button>
+          <label><br>{{ appointment.id }}</label>
+        </div>
+      </th>
+
+      <th><!-- DESCRIPTION FIELD -->
+        <div *ngIf="editable.description">
+          <input [(ngModel)]="appointment.description">
+          <button (click)="editable.description=false">Save</button>
+        </div>
+        <div *ngIf="!editable.description">
+          <button (click)="editable.description=true">Edit</button>
+          <label><br>{{ appointment.description }}</label>
+        </div>
+      </th>
+
+      <th><!-- START FIELD -->
+        <div *ngIf="editable.start">
+          <input type="datetime-local" [(ngModel)]="appointment.start">
+          <button (click)="editable.start=false">Save</button>
+        </div>
+        <div *ngIf="!editable.start">
+          <button (click)="editable.start=true">Edit</button>
+          <label><br>Date: {{ appointment.start | date:'dd-MM-yyyy' }} <br>Time: {{ appointment.start | date:'HH:mm a'}}</label>
+        </div>
+      </th>
+
+      <th><!-- END FIELD -->
+        <div *ngIf="editable.end">
+          <input type="datetime-local" [(ngModel)]="appointment.end">
+          <button (click)="editable.end=false">Save</button>
+        </div>
+        <div *ngIf="!editable.end">
+          <button (click)="editable.end=true">Edit</button>
+          <label><br>Date: {{ appointment.end | date:'dd-MM-yyyy' }} <br>Time: {{ appointment.end | date:'HH:mm a'}}</label>
+        </div>
+      </th>
+
+      <th><!-- NOTES FIELD -->
+        <div *ngIf="editable.note">
+          <input [(ngModel)]="appointment.notes">
+          <button (click)="editable.note=false">Save</button>
+        </div>
+        <div *ngIf="!editable.note">
+          <button (click)="editable.note=true">Edit</button>
+          <div *ngFor="let note of appointment.notes">{{ note }}<br></div>
+        </div>
+
+        <div><!-- this is the edit note input and button -->
+          <input type="text" class=txt name="item" [(ngModel)]="inputNote" placeholder="Add a note">
+          <input type="submit" (click)="addNote(appointment, inputNote)" value="Add note">
+        </div>
+      </th>
+
+        <th><!-- PARTY FIELD -->
+
+            <div *ngFor="let userId of appointment.party; let i = index">{{ userId }}
+              <button (click)="removeIdFromParty(userID, i)">Remove</button>
+            </div>
+
+
         </th>
 
-        <th>
-          <div *ngFor="let userId of appointment.party"> {{userId}} <br> </div>
-        </th>
       </tr>
     </table>
+
+    <input type="submit" (click)="updateAppointmentDetails(appointment)" value="Submit update">
+
 </div> <!-- End of appointment details table -->

@@ -14,11 +14,20 @@ table {
 
 th, td {
   padding: 10px;
+  vertical-align: text-top;
   text-align: left;
   width: 200px;
   border: 1px solid black;
   background: rgba(73,155,234,1);
   background: linear-gradient(to right, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
+}
+
+#editable {
+  color: red;
+}
+
+th button {
+
 }
 
 tr {
