@@ -1,42 +1,39 @@
 
-<button class="button" (click)="getAppointments()">View all appointments</button>
+<button class="button" (click)="getAppointments(); updateResponse='';">View all appointments</button>
 <br><br><br>
-
-
 
 
 <form *ngIf="showIdInput">
   <!-- <button (click)="getAppointmentByID()">Get post by ID</button> -->
   <input type="text" class=txt name="item" [(ngModel)]="inputId" placeholder="Enter an ID">
   <!-- <br><span>{{ inputId }}</span> -->
-  <input class="button" type="submit" (click)="getAppointmentByID(inputId)" value="List appointments for user">
+  <input class="button" type="submit" (click)="getAppointmentFilterID(inputId)" value="List appointments for user">
 </form>
 
 
-<table *ngIf="showAppointmentsForId">
-  <div *ngFor="let appoint of appointments | async; first as isFirst;  last as isLast" > <!-- print out each post object of the list called posts -->
+<table class="hoverTable" *ngIf="showAppointmentsForId">
+
+  <div *ngFor="let appoint of appointments | async; first as isFirst" > <!-- print out each post object of the list called posts -->
 
     <!-- because the array of id's in the Party field are returned as a string, search the string to find the corresponding id -->
     <!--<tr *ngIf="post.Party.indexOf(getInputId()) != -1">-->
     <!-- <tr *ngIf="partyHasId(post.Party)"> -->
-    <tr *ngIf="partyHasId(appoint.Party, appoint.Id); else elseBlock">
 
-      <!--
-      <span *ngIf="appoint.Id && showRow && showTest">
-        <tr>
-          <th>ID</th>
-          <th>Description</th>
-          <th>Start</th>
-        </tr>
-      </span>
-    -->
+    <tr *ngIf="isFirst;">
+      <th>ID</th>
+      <th>Description</th>
+      <th>Start</th>
+      <th>Party</th>
+    </tr>
+
+    <tr *ngIf="partyHasId(appoint.Party, appoint.Id); else elseBlock" (click)="onClickAppointment(appoint); updateResponse='';">
+
+
 
       <!--<span *ngIf="isFirst"><p>ID {{inputId}} has the following appointments:</p></span>-->
-        <th contenteditable="isEditable">{{appoint.Id}}<p id=editable (click)="consoleTalk()">[edit]</p></th> <!-- DEBUG -->
+        <th>{{appoint.Id}}</th>
         <th>{{appoint.Description}}</th>
         <th>{{appoint.Start | date:'dd-MM-yyyy HH:mm a'}}</th>
-        <th>{{appoint.End | date:'dd-MM-yyyy HH:mm a'}}</th>
-        <th>{{appoint.Notes}}</th>
         <th>{{appoint.Party}}</th>
 
     </tr>
@@ -44,19 +41,20 @@
     <ng-template #elseBlock *ngIf="isLast"> Alternate text while primary text is hidden</ng-template>
 
   </div>
+
 </table>
 
 
 
 <table class="hoverTable" *ngIf="showAllAppointments">
-  <div *ngFor="let appoint of appointments | async; first as isFirst" (click)="onClickAppointment(appoint)" > <!-- print out each post object of the list called posts -->
+  <div *ngFor="let appoint of appointments | async; first as isFirst" (click)="onClickAppointment(appoint); updateResponse='';" > <!-- print out each post object of the list called posts -->
     <!-- {{ appoint | json }} this shows the response in JSON format-->
-    <span *ngIf="isFirst" style="color: white;">
-      <p>Click an appointment to view appointment details or edit/add note.</p>
+    <span *ngIf="isFirst" style="color:white; font-size:18px;">
+      <p id="helpText">Click an appointment to view appointment details or edit/add note.</p>
       <tr>
         <th>ID</th>
-        <th>DESCRIPTION</th>
-        <th>START</th>
+        <th>Description</th>
+        <th>Start</th>
       </tr>
     </span>
 
@@ -71,11 +69,10 @@
 
 <div *ngIf="showAppointmentDetails">
   <br>
-  <p>Click a field to edit it.</p>
+  <p id="helpText">Appointment details:</p>
   <table>
 
-    <tr style="color: white;">
-      <!-- <th contenteditable="isEditable">ID</th> could try editable fields-->
+    <tr style="color: white; font-size:18px;">
       <th>ID</th>
       <th>Description</th>
       <th>Start</th>
@@ -87,23 +84,29 @@
     <tr>
     <!--<tr contenteditable="true"> contenteditable doesn't quite work, cannot bind or get value -->
       <th><!-- ID FIELD -->
-        <div *ngIf="editable.id"> <!-- if the id field is editable-->
-          <input [(ngModel)]="appointment.id"> <!-- bind the input -->
-          <button (click)="editable.id=false">Save</button> <!-- show save button instead of edit button -->
+
+        {{ appointment.id}}
+
+        <!-- appointment field should not be editbale, will create new records and interfere with the API
+
+        <div *ngIf="editable.id">
+          <input [(ngModel)]="appointment.id">
+          <button (click)="editable.id=false">Save</button>
         </div>
         <div *ngIf="!editable.id">
           <button (click)="editable.id=true">Edit</button>
           <label><br>{{ appointment.id }}</label>
         </div>
+        -->
       </th>
 
       <th><!-- DESCRIPTION FIELD -->
-        <div *ngIf="editable.description">
-          <input [(ngModel)]="appointment.description">
-          <button (click)="editable.description=false">Save</button>
+        <div *ngIf="editable.description"><!-- if the description field is editable-->
+          <input [(ngModel)]="appointment.description"><!-- bind the input to the field -->
+          <button (click)="editable.description=false">Save</button><!-- show save button instead of edit button -->
         </div>
-        <div *ngIf="!editable.description">
-          <button (click)="editable.description=true">Edit</button>
+        <div *ngIf="!editable.description"><!-- if the description field is not editable -->
+          <button (click)="editable.description=true">Edit</button><!-- show edit button-->
           <label><br>{{ appointment.description }}</label>
         </div>
       </th>
@@ -131,13 +134,9 @@
       </th>
 
       <th><!-- NOTES FIELD -->
-        <div *ngIf="editable.note">
-          <input [(ngModel)]="appointment.notes">
-          <button (click)="editable.note=false">Save</button>
-        </div>
-        <div *ngIf="!editable.note">
-          <button (click)="editable.note=true">Edit</button>
-          <div *ngFor="let note of appointment.notes">{{ note }}<br></div>
+        <div *ngFor="let note of appointment.notes;  let i = index">{{ note }}
+          <a (click)="removeNoteFromNotes(note, i)">  remove</a>
+          <br>
         </div>
 
         <div><!-- this is the edit note input and button -->
@@ -147,17 +146,22 @@
       </th>
 
         <th><!-- PARTY FIELD -->
+          <div *ngFor="let userId of appointment.party; let i = index">{{ userId }}
+            <a (click)="removeIdFromParty(userID, i)">  remove</a>
+          </div>
 
-            <div *ngFor="let userId of appointment.party; let i = index">{{ userId }}
-              <button (click)="removeIdFromParty(userID, i)">Remove</button>
-            </div>
-
-
+          <div><!-- this is the edit note input and button -->
+            <input type="text" class=txt name="item" [(ngModel)]="inputPartyId" placeholder="(ID)">
+            <input type="submit" (click)="appointment.party.push(inputPartyId); inputPartyId=''; " value="Add to party">
+          </div>
         </th>
 
       </tr>
     </table>
 
-    <input type="submit" (click)="updateAppointmentDetails(appointment)" value="Submit update">
+    <input class=button type="submit" (click)="updateAppointmentDetails(appointment)" value="Submit update">
+
+    <div *ngIf="updateResponse" id="helpText">Appointment details updated!</div><!-- if the update response is not empty-->
+
 
 </div> <!-- End of appointment details table -->

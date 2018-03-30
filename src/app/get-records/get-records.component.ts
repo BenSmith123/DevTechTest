@@ -26,9 +26,7 @@ export class GetRecordsComponent implements OnInit {
   showAppointmentDetails = false;
   showIdInput = true;
 
-  fieldEditMode = false;
-
-  testText = "";
+  updateResponse = null;
 
   // initialise empty text fields for the HTML to use
   inputId = "";
@@ -63,8 +61,11 @@ export class GetRecordsComponent implements OnInit {
     console.log("hello");
   }
 
+  removeNoteFromNotes(note,index){
+    this.appointment.notes.splice(index, 1);
+  }
+
   removeIdFromParty(id, index){
-    //console.log(obj);
     this.appointment.party.splice(index, 1);
     console.log(this.appointment);
   }
@@ -106,17 +107,13 @@ export class GetRecordsComponent implements OnInit {
   }
 
 
-  updateAppointmentDetails(appointment, note){
+  updateAppointmentDetails(appointment){
 
-    console.log(appointment.id);
-    /*
-    appointment.notes.push(note); // push the param note to the appointment.notes array
+    console.log(appointment);
 
     this.http.put(this.ROOT_URL+"&id="+appointment.id,appointment) // send the json appointment in the body
-    .subscribe(res => console.log(res)); // subscribe to the http put request, log the response
+    .subscribe(res => this.updateResponse = res); // subscribe to the http put request, set the response to variable (used in HTML to show text)
 
-    this.inputNote = ""; // reset the note variable to be empty for the next note
-    */
   }
 
 
@@ -128,6 +125,22 @@ export class GetRecordsComponent implements OnInit {
   addNote(appointment, note){
 
     appointment.notes.push(note); // push the param note to the appointment.notes array
+
+    this.http.put(this.ROOT_URL+"&id="+appointment.id,appointment) // send the json appointment in the body
+    .subscribe(res => console.log(res)); // subscribe to the http put request, log the response
+
+    this.inputNote = ""; // reset the note variable to be empty for the next note
+  }
+
+
+  /**
+   * add a ID to the current appointment.party array, send the appointment json in PUT body
+   * @param: appointment: the current appointment object to add the id to
+   * @param: id: the string of the user-input id
+   */
+  addIdToParty(appointment, id){
+
+    appointment.party.push(id); // push the param note to the appointment.notes array
 
     this.http.put(this.ROOT_URL+"&id="+appointment.id,appointment) // send the json appointment in the body
     .subscribe(res => console.log(res)); // subscribe to the http put request, log the response
@@ -157,17 +170,35 @@ export class GetRecordsComponent implements OnInit {
    * Http GET request to get the full json of appointments (filtered in the HTML)
    * @param: the user-input id
    */
-  getAppointmentByID(id){
-    console.log("getAppointmentByID called: id="+id);
+  getAppointmentFilterID(id){
+
     //let params = new HttpParams().set('id','705');
     this.inputId = id; // store the inputId
 
-    this.appointments = this.http.get(this.ROOT_URL);
+    this.appointments = this.http.get(this.ROOT_URL)
+    //.subscribe(response => this.getAppointmentByID(response)); // subscribe to the http put request, call the callback function
+
+    //this.appointments = this.http.get(this.ROOT_URL);
     this.showAllAppointments = false;
     this.showAppointmentsForId = true;
-
-    //this.posts = this.http.get(this.ROOT_URL+"&id="+id);
-    //this.posts = this.http.get<Post[]>(this.ROOT_URL+"&id=705");
   }
+
+  /*
+    getAppointmentByID(response){
+
+      let appointmentList= [];
+
+      for(let i = 0; i < response.length; i++){
+        console.log("yoooo"+response[i].Id);
+        appointmentList.push(response[i]);
+      }
+
+      this.appointments = appointmentList;
+
+      console.log("LIST IS: "+appointmentList.Id);
+
+    }
+  */
+
 
 }
