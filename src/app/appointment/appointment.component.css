@@ -11,29 +11,46 @@ table {
   height: auto;
   overflow:auto;
   line-height: 1.5;
+  width: 100%;
 }
 
 th, td {
   padding: 10px;
   vertical-align: text-top;
   text-align: left;
-  width: 200px;
+  width: 300px;
   border: 1px solid black;
   background: rgba(73,155,234,1);
   background: linear-gradient(to right, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
 }
 
-#editable {
-  color: red;
-}
-
-#helpText{
+#helpText {
   color:black;
   font-size:18px;
 }
 
-th button {
+#tableRowFirst {
+  color:white;
+  font-size:18px;
+}
 
+.columnLeft {
+ float: left;
+ margin-left: 25%;
+}
+
+.columnRight {
+  float: right;
+  margin-right: 25%;
+}
+
+.content {
+  padding: 100px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+th button {
 }
 
 a {

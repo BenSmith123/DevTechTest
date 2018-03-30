@@ -4,15 +4,13 @@ import { Appointment } from '../appointment-interface';
 import { EditableAppointment } from '../editable-interface';
 import { Observable } from 'rxjs/Observable';
 
-
 @Component({
-  selector: 'app-get-records',
-  templateUrl: './get-records.component.html',
-  styleUrls: ['./get-records.component.css']
+  selector: 'app-appointment',
+  templateUrl: './appointment.component.html',
+  styleUrls: ['./appointment.component.css']
 })
 
-
-export class GetRecordsComponent implements OnInit {
+export class AppointmentComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
 
@@ -170,35 +168,22 @@ export class GetRecordsComponent implements OnInit {
    * Http GET request to get the full json of appointments (filtered in the HTML)
    * @param: the user-input id
    */
-  getAppointmentFilterID(id){
+  getAppointmentWithId(id) {
 
     //let params = new HttpParams().set('id','705');
     this.inputId = id; // store the inputId
 
-    this.appointments = this.http.get(this.ROOT_URL)
-    //.subscribe(response => this.getAppointmentByID(response)); // subscribe to the http put request, call the callback function
+    if(id != "") {
 
-    //this.appointments = this.http.get(this.ROOT_URL);
-    this.showAllAppointments = false;
-    this.showAppointmentsForId = true;
-  }
+      this.appointments = this.http.get(this.ROOT_URL)
+      //.subscribe(response => this.getAppointmentByID(response)); // subscribe to the http put request, call the callback function
 
-  /*
-    getAppointmentByID(response){
-
-      let appointmentList= [];
-
-      for(let i = 0; i < response.length; i++){
-        console.log("yoooo"+response[i].Id);
-        appointmentList.push(response[i]);
-      }
-
-      this.appointments = appointmentList;
-
-      console.log("LIST IS: "+appointmentList.Id);
-
+      this.showAllAppointments = false;
+      this.showAppointmentsForId = true;
+    } else {
+      this.showAppointmentsForId = false;
     }
-  */
+  }
 
 
 }

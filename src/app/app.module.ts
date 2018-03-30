@@ -6,13 +6,12 @@ import { DatePipe } from '@angular/common';
 
 
 import { AppComponent } from './app.component';
-import { GetRecordsComponent } from './get-records/get-records.component';
-import { ListItemComponent } from './list-item/list-item.component';
 import { AppointmentApiService } from './appointment-api.service';
+import { AppointmentComponent } from './appointment/appointment.component';
 
 
 @NgModule({
-  declarations: [AppComponent, GetRecordsComponent, ListItemComponent],
+  declarations: [AppComponent, AppointmentComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule],
   providers: [AppointmentApiService],
   bootstrap: [AppComponent]
