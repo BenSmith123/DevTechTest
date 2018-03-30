@@ -8,7 +8,5 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class AppComponent {
-  title = 'DevTechTest';
-  details = '';
-  
+  title = 'Lancom DevTechTest';
 }

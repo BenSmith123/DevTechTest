@@ -54,15 +54,16 @@ export class AppointmentComponent implements OnInit {
 
   ngOnInit(){}
 
-  // DEBUG
-  consoleTalk(){
-    console.log("hello");
-  }
-
+  /**
+   * removes a specified note from the current appointment notes
+   */
   removeNoteFromNotes(note,index){
     this.appointment.notes.splice(index, 1);
   }
 
+  /**
+   * removes a specified userid from the current appointment party
+   */
   removeIdFromParty(id, index){
     this.appointment.party.splice(index, 1);
     console.log(this.appointment);
@@ -105,13 +106,16 @@ export class AppointmentComponent implements OnInit {
   }
 
 
+  /**
+   * connect to the API via put request, send the body - updates the appointment with the corresponding ID
+   * @param: the current appointment object to send in the put body
+   */
   updateAppointmentDetails(appointment){
 
-    console.log(appointment);
+    //console.log(appointment);
 
     this.http.put(this.ROOT_URL+"&id="+appointment.id,appointment) // send the json appointment in the body
     .subscribe(res => this.updateResponse = res); // subscribe to the http put request, set the response to variable (used in HTML to show text)
-
   }
 
 
@@ -170,7 +174,6 @@ export class AppointmentComponent implements OnInit {
    */
   getAppointmentWithId(id) {
 
-    //let params = new HttpParams().set('id','705');
     this.inputId = id; // store the inputId
 
     if(id != "") {
@@ -181,7 +184,7 @@ export class AppointmentComponent implements OnInit {
       this.showAllAppointments = false;
       this.showAppointmentsForId = true;
     } else {
-      this.showAppointmentsForId = false;
+      this.showAppointmentsForId = false; // if no input, don't display the table titles
     }
   }
 

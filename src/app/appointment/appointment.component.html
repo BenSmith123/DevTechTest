@@ -34,7 +34,7 @@
         <!--<span *ngIf="isFirst"><p>ID {{inputId}} has the following appointments:</p></span>-->
           <th>{{appoint.Id}}</th>
           <th>{{appoint.Description}}</th>
-          <th>Date: {{ appoint.Start | date:'dd-MM-yyyy' }} <br>Time: {{ appoint.Start | date:'HH:mm a' }}</th>
+          <th>Date: {{ appoint.Start | date:'dd-MM-yyyy' }} <br>Time: {{ appoint.Start | date:'hh:mm a' }}</th>
           <th>
             <div *ngFor="let userId of appoint.Party">{{ userId }}</div>
           </th>
@@ -45,9 +45,8 @@
   </table>
 
 
-
   <table class="hoverTable" *ngIf="showAllAppointments">
-    <div *ngFor="let appoint of appointments | async; first as isFirst" (click)="onClickAppointment(appoint); updateResponse='';" > <!-- print out each post object of the list called posts -->
+    <div *ngFor="let appoint of appointments | async; first as isFirst"> <!-- print out each post object of the list called posts -->
       <!-- {{ appoint | json }} this shows the response in JSON format-->
       <span *ngIf="isFirst" id="tableRowFirst">
         <p id="helpText">Click an appointment to view appointment details or edit/add note.</p>
@@ -58,10 +57,10 @@
         </tr>
       </span>
 
-      <tr>
+      <tr (click)="onClickAppointment(appoint); updateResponse='';">
         <th>{{ appoint.Id }}</th>
         <th>{{ appoint.Description }}</th>
-        <th>Date: {{ appoint.Start | date:'dd-MM-yyyy' }} <br>Time: {{ appoint.Start | date:'HH:mm a' }}</th>
+        <th>Date: {{ appoint.Start | date:'dd-MM-yyyy' }} <br>Time: {{ appoint.Start | date:'hh:mm a' }}</th>
       </tr>
     </div>
   </table><!-- End of ALL appointments table -->
@@ -118,7 +117,7 @@
           </div>
           <div *ngIf="!editable.start">
             <button (click)="editable.start=true">Edit</button>
-            <label><br>Date: {{ appointment.start | date:'dd-MM-yyyy' }} <br>Time: {{ appointment.start | date:'HH:mm a'}}</label>
+            <label><br>Date: {{ appointment.start | date:'dd-MM-yyyy' }} <br>Time: {{ appointment.start | date:'hh:mm a'}}</label>
           </div>
         </th>
 
@@ -129,7 +128,7 @@
           </div>
           <div *ngIf="!editable.end">
             <button (click)="editable.end=true">Edit</button>
-            <label><br>Date: {{ appointment.end | date:'dd-MM-yyyy' }} <br>Time: {{ appointment.end | date:'HH:mm a'}}</label>
+            <label><br>Date: {{ appointment.end | date:'dd-MM-yyyy' }} <br>Time: {{ appointment.end | date:'hh:mm a'}}</label>
           </div>
         </th>
 
@@ -161,10 +160,12 @@
         </tr>
       </table>
 
-      <br>
-      <input class=button type="submit" (click)="updateAppointmentDetails(appointment)" value="Submit update">
+      <div style="float:right; padding-righ:40px;">
+        <br>
+        <input class=button type="submit" (click)="updateAppointmentDetails(appointment); updateResponse=false;" value="Submit update">
 
-      <div *ngIf="updateResponse" id="helpText">Appointment details updated!</div><!-- if the update response is not empty-->
+        <div style="text-align: right;" *ngIf="updateResponse" id="helpText"><br>Appointment updated!</div><!-- if the update response is not empty-->
+      </div>
 
     </div> <!-- End of appointment details table -->
 
